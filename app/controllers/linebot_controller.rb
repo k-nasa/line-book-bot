@@ -41,8 +41,7 @@ class LinebotController < ApplicationController
         client.push_message(user_id,message)
       when "follow"
         message = {type: 'text' ,
-                   text: """友達登録ありがとう。
-                   使い方はこのサイトを参考にしてね"""}
+                   text: """友達登録ありがとう。\n使い方はこのサイトを参考にしてね"""}
         user_id = event['source']['userId']
         client.push_message(user_id,message)
       end
