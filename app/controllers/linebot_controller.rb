@@ -3,7 +3,7 @@ class LinebotController < ApplicationController
   protect_from_forgery :except => [:callback]
   
   def get_callback
-    render "success"
+    render plain: "success"
   end
 
   def callback
