@@ -33,11 +33,12 @@ class LinebotController < ApplicationController
           puts "follow"
         end
       end
+      puts "########テストメッセージ##############"
+      puts event.type
+      puts "######################################"
+
     }
 
-    puts "########テストメッセージ##############"
-    puts event.type
-    puts "######################################"
   end
 
   def client
