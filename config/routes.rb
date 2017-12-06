@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
-  post 'collback' => "linebot#callback"
+  post 'callback' => "linebot#callback"
   get 'callback' => "linebot#get_callback"
 end
