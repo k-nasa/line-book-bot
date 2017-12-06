@@ -9,10 +9,10 @@ class LinebotController < ApplicationController
   def callback
     body = request.body.read
 
-    signature = request.env['HTTP_X_LINE_SIGNATURE']
-    unless clinet.validate_signature(body,signature)
-      error 400 do 'Bad request' end
-    end
+    # signature = request.env['HTTP_X_LINE_SIGNATURE']
+    # unless clinet.validate_signature(body,signature)
+    #   error 400 do 'Bad request' end
+    # end
 
     events = client.parse_events_from(body)
     events.each { |event|
@@ -37,7 +37,7 @@ class LinebotController < ApplicationController
     def clinet 
       @clinet ||= Line::Bot::Client.new{ |config| 
         config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-        cinfig.channel_token = ENV["LINE_CHANNEL_TOLEN"]
+        cinfig.channel_token = ENV["LINE_CHANNEL_TOKEN"]
       }
     end
 end
