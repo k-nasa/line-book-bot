@@ -29,7 +29,8 @@ class LinebotController < ApplicationController
           p response
           user_id = event['source']['userId']
           client.push_message(user_id,message)
-          puts event.source['userId']
+        when "follow"
+          puts "follow"
         end
       end
     }
