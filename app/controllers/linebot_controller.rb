@@ -27,8 +27,9 @@ class LinebotController < ApplicationController
           }
           response = client.reply_message(event['replyToken'], message)
           p response
-          puts event['source']['userId']
-          puts event
+          user_id = event['source']['userId']
+          client.puts_message(user_id,message*2)
+
         end
       end
     }
