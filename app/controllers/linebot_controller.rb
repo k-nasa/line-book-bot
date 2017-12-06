@@ -3,7 +3,6 @@ class LinebotController < ApplicationController
   protect_from_forgery :except => [:callback]
   
   def get_callback
-    render plain: "success"
   end
 
 
@@ -29,6 +28,7 @@ class LinebotController < ApplicationController
           }
           response = client.reply_message(event['replyToken'], message)
           p response
+          puts event
         end
       end
     }
