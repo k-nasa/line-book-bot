@@ -38,12 +38,15 @@ class LinebotController < ApplicationController
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
         user_id = event['source']['userId']
-        clinet.push_message(user_id,message)
+        client.push_message(user_id,message)
+      when "follow"
+        message = {type: 'text' ,text: 'テストメッセージ'}
+        user_id = event['source']['userId']
+        client.push_message(user_id,message)
       end
       puts "########テストメッセージ##############"
       puts event['type']
       puts "######################################"
-
     }
 
   end
