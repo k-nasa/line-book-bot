@@ -1,6 +1,10 @@
 class LinebotController < ApplicationController
   require 'line/bot'
   protect_from_forgery :except => [:callback]
+  
+  def get_callback
+    render "success"
+  end
 
   def callback
     body = request.body.read
