@@ -93,7 +93,7 @@ class LinebotController < ApplicationController
   end
 
 
-  def confirm_message
+  def confirm_message(event)
     {
       "type": "template",
       "altText": "this is a buttons template",
