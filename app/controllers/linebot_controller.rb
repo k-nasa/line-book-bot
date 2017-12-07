@@ -53,8 +53,8 @@ class LinebotController < ApplicationController
 
   #ブロック時の処理
   def unfollow(event)
-    client.push_message(user_id,{type: "text",message: "byby"})
     user_id = event['source']['userId']
+    client.push_message(user_id,{type: "text",message: "byby"})
     user = User.find_by_line_id(user_id)
     if user 
       user.destroy
