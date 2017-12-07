@@ -24,15 +24,12 @@ class LinebotController < ApplicationController
         message = confirm_message
         user_id = event['source']['userId']
         client.push_message(user_id,message)
-
       when "follow"
         follow(event)
-
       when "unfollow"
         unfollow(event)
-
       when "postback"
-        event['postback']['data']
+        puts event['postback']['data']
         client.push_message(type: "text", text: "ポストバックきた!")
       end
     }
@@ -53,8 +50,7 @@ class LinebotController < ApplicationController
       client.push_message(user_id,message)
     else 
       message = {type: "text",
-                 text: "エラー"
-      }
+                 text: "エラー"}
     end
   end
 
