@@ -17,11 +17,11 @@ class LinebotController < ApplicationController
     end
 
     events = client.parse_events_from(body)
-    events.each { |@event|
-      case @event['type']
+    events.each { |event|
+      case event['type']
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
-        user_id = @event['source']['userId']
+        user_id = event['source']['userId']
         client.push_message(user_id,message)
       when "follow"
         follow()
@@ -32,9 +32,9 @@ class LinebotController < ApplicationController
   end
 
   #友達登録されたときの処理
-  def follow()
-    puts @event
-    user_id = @event['source']['userId']
+  def follow(event)
+    puts event
+    user_id = event['source']['userId']
     res = get_profile(user_id)
     puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
