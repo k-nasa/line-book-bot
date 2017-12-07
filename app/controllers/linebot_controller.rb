@@ -31,6 +31,8 @@ class LinebotController < ApplicationController
     }
   end
 
+
+
   #友達登録されたときの処理
   def follow(event)
     user_id = event['source']['userId']
@@ -39,7 +41,7 @@ class LinebotController < ApplicationController
     user = User.new(name: res['displayName'],line_id: user_id)
     if user.save
       message = {type: "text",
-                 text: "友達登録ありがとう!!"
+                 text: "友達登録ありがとう!!\n使い方はこちらを参照"
       }
       client.push_message(user_id,message)
     else 
@@ -49,12 +51,13 @@ class LinebotController < ApplicationController
     end
   end
 
+  #ブロック時の処理
   def unfollow(event)
+    client.push_message(user_id,{type: "text",message: "byby"})
     user_id = event['source']['userId']
     user = User.find_by_line_id(user_id)
     if user 
       user.destroy
-      client.push_message(user_id,{type: "text",message: "byby"})
     end
   end
 
