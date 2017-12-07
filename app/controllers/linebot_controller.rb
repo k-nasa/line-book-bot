@@ -71,11 +71,11 @@ class LinebotController < ApplicationController
     user_id = event['source']['userId']
     case postback_data[0]
     when "登録キャンセル"
-      client(user_id,{type: "text",message: "キャンセルしました"})
+      client.push_message(user_id,{type: "text",message: "キャンセルしました"})
     when "本として登録"
-      client(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
+      client.push_message(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
     when "作者として登録"
-      client(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
+      client.push_message(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
     end
   end
 
