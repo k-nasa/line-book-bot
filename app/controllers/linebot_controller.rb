@@ -64,9 +64,9 @@ class LinebotController < ApplicationController
     case response
     when Net::HTTPSuccess then
       contact = JSON.parse(response.body)
-      p contact['displayName']
-      p contact['pictureUrl']
-      p contact['statusMessage']
+      # p contact['displayName']
+      # p contact['pictureUrl']
+      # p contact['statusMessage']
     else
       p "#{response.code} #{response.body}"
     end
