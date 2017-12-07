@@ -26,14 +26,13 @@ class LinebotController < ApplicationController
       when "follow"
         follow()
       when "unfollow"
-
+        unfollow()
       end
     }
   end
 
   #友達登録されたときの処理
   def follow(event)
-    puts event
     user_id = event['source']['userId']
     res = get_profile(user_id)
     puts res['displayName']
@@ -47,6 +46,15 @@ class LinebotController < ApplicationController
       message = {type: "text",
                  text: "エラー"
       }
+    end
+  end
+
+  def unfollow(event)
+    user_id = event['source']['userId']
+    user = User.find_by_line_id(user_id)
+    if user 
+      user.destroy
+      client.push_message(user_id,{type: "text",message: "byby"})
     end
   end
 
