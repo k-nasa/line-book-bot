@@ -32,13 +32,7 @@ class LinebotController < ApplicationController
         unfollow(event)
 
       when "postback"
-        user_id = event['source']['userId']
-        case event['postback']['data']
-        when "登録キャンセル"
-          client.push_message(user_id,{type: 'text',text: "キャンセルしました"})
-        when "本として登録"
-          #type: "book" , content 
-        end
+        postback(event)
       end
     }
   end
@@ -69,6 +63,19 @@ class LinebotController < ApplicationController
     user = User.find_by_line_id(user_id)
     if user 
       user.destroy
+    end
+  end
+
+  def postback(event)
+    postback_data = event['postback']['data'].split("\n")
+    user_id = event['source']['userId']
+    case postback_data[0]
+    when "登録キャンセル"
+      client(user_id,{type: "text",message: "キャンセルしました"})
+    when "本として登録"
+      client(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
+    when "作者として登録"
+      client(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
     end
   end
 
