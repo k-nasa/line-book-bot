@@ -24,9 +24,9 @@ class LinebotController < ApplicationController
         user_id = event['source']['userId']
         client.push_message(user_id,message)
       when "follow"
-        follow()
+        follow(event)
       when "unfollow"
-        unfollow()
+        unfollow(event)
       end
     }
   end
