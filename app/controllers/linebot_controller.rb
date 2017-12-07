@@ -105,7 +105,7 @@ class LinebotController < ApplicationController
           {
             "type": "postback",
             "label": "本として登録",
-            "data": ["本として登録",event['message']['text']]
+            "data": "本として登録"
           },
           {
             "type": "postback",
