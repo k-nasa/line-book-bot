@@ -3,6 +3,7 @@ class LinebotController < ApplicationController
   protect_from_forgery :except => [:callback]
   
   def get_callback
+    render plain: "hello"
   end
 
 
@@ -16,25 +17,25 @@ class LinebotController < ApplicationController
     end
 
     events = client.parse_events_from(body)
-    events.each { |@event|
-      case @event['type']
+    events.each { |event|
+      case event['type']
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
-        user_id = @event['source']['userId']
+        user_id = event['source']['userId']
         client.push_message(user_id,message)
       when "follow"
-        follow()
+        follow(event)
       end
       puts "########テストメッセージ##############"
-      puts @event['type']
+      puts event['type']
       puts "######################################"
     }
 
   end
 
   #友達登録されたときの処理
-  def follow
-    user_id = @event['source']['userId']
+  def follow(event)
+    user_id = event['source']['userId']
     res = client.get_profile(user_id)
     User.new(name: res['displayName'],line_id: user_id)
     if User.save
