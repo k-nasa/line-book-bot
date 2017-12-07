@@ -30,7 +30,8 @@ class LinebotController < ApplicationController
         unfollow(event)
       when "postback"
         puts event['postback']['data']
-        client.push_message(type: "text", text: "ポストバックきた!")
+        user_id = event['source']['userId']
+        client.push_message(user_id,{type: 'text',text: "成功!"})
       end
     }
   end
