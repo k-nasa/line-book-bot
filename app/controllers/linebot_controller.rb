@@ -24,10 +24,16 @@ class LinebotController < ApplicationController
         message = confirm_message
         user_id = event['source']['userId']
         client.push_message(user_id,message)
+
       when "follow"
         follow(event)
+
       when "unfollow"
         unfollow(event)
+
+      when "postback"
+        event['postback']['data']
+        client.push_message(type: "text", text: "ポストバックきた!")
       end
     }
   end
@@ -84,52 +90,28 @@ class LinebotController < ApplicationController
 
 
   def confirm_message
-    # {
-    #   "type": "template",
-    #   "altText": "this is a confirm template",
-    #   "template": {
-    #     "type": "confirm",
-    #     "text": "Are you sure?",
-    #     "actions": [
-    #       {
-    #         "type": "message",
-    #         "label": "Yes",
-    #         "text": "yes"
-    #       },
-    #       {
-    #         "type": "message",
-    #         "label": "No",
-    #         "text": "no"
-    #       }
-    #     ]
-    #   }
-    # }
     {
       "type": "template",
       "altText": "this is a buttons template",
       "template": {
         "type": "buttons",
-        "thumbnailImageUrl": "https://example.com/bot/images/image.jpg",
-        "imageAspectRatio": "rectangle",
-        "imageSize": "cover",
-        "imageBackgroundColor": "#FFFFFF",
         "title": "Menu",
         "text": "Please select",
         "actions": [
           {
             "type": "postback",
-            "label": "Buy",
+            "label": "本として登録",
             "data": "action=buy&itemid=123"
           },
           {
             "type": "postback",
-            "label": "Add to cart",
-            "data": "action=add&itemid=123"
+            "label": "作者として登録",
+            "data": "test"
           },
           {
-            "type": "uri",
-            "label": "View detail",
-            "uri": "http://example.com/page/123"
+            "type": "postback",
+            "label": "入力し直す",
+            "data": "action=buy&itemid=123"
           }
         ]
       }
