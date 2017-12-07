@@ -37,8 +37,8 @@ class LinebotController < ApplicationController
   def follow(event)
     user_id = event['source']['userId']
     res = client.get_profile(user_id)
-    User.new(name: res['displayName'],line_id: user_id)
-    if User.save
+    user = User.new(name: res['displayName'],line_id: user_id)
+    if user.save
       message = {type: text,
                  text: "友達登録ありがとう!!"
       }
