@@ -21,17 +21,24 @@ class LinebotController < ApplicationController
       case event['type']
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
-        message = confirm_message
+        message = confirm_message(event)
         user_id = event['source']['userId']
         client.push_message(user_id,message)
+
       when "follow"
         follow(event)
+
       when "unfollow"
         unfollow(event)
+
       when "postback"
-        puts event['postback']['data']
         user_id = event['source']['userId']
-        client.push_message(user_id,{type: 'text',text: "成功!"})
+        case event['postback']['data']
+        when "登録キャンセル"
+          client.push_message(user_id,{type: 'text',text: "キャンセルしました"})
+        when "本として登録"
+          #type: "book" , content 
+        end
       end
     }
   end
@@ -98,17 +105,18 @@ class LinebotController < ApplicationController
           {
             "type": "postback",
             "label": "本として登録",
-            "data": "action=buy&itemid=123"
+            "text_data": event['message']['text']
+            "data": "本として登録"
           },
           {
             "type": "postback",
             "label": "作者として登録",
-            "data": "test"
+            "data": "作者として登録"
           },
           {
             "type": "postback",
-            "label": "入力し直す",
-            "data": "action=buy&itemid=123"
+            "label": "登録キャンセル",
+            "data": "登録キャンセル"
           }
         ]
       }
