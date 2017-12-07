@@ -53,6 +53,7 @@ class LinebotController < ApplicationController
     else 
       message = {type: "text",
                  text: "エラー"}
+      client.push_message(user_id,message)
     end
   end
 
@@ -72,7 +73,8 @@ class LinebotController < ApplicationController
     puts postback_data[0]
     case postback_data[0]
     when "登録キャンセル"
-      client.push_message(user_id,{type: "text",message: "キャンセルしました"})
+      message = {type: "text", text: "キャンセルしました"}
+      client.push_message(user_id,message)
       puts "登録キャンセル"
     when "本として登録"
       client.push_message(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
