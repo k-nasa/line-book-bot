@@ -16,40 +16,33 @@ class LinebotController < ApplicationController
     end
 
     events = client.parse_events_from(body)
-    events.each { |event|
-      # case event
-      # when Line::Bot::Event::Message
-      #   case event.type
-      #   when Line::Bot::Event::MessageType::Text
-      #     message = {
-      #       type: 'text',
-      #       text: event.message['text']
-      #     }
-      #     response = client.reply_message(event['replyToken'], message)
-      #     p response
-      #     user_id = event['source']['userId']
-      #     client.push_message(user_id,message)
-      #   when "follow"
-      #     puts "follow"
-      #   end
-      # end
-
-      case event['type']
+    events.each { |@event|
+      case @event['type']
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
-        user_id = event['source']['userId']
+        user_id = @event['source']['userId']
         client.push_message(user_id,message)
       when "follow"
-        message = {type: 'text' ,
-                   text: """友達登録ありがとう。\n使い方はこのサイトを参考にしてね"""}
-        user_id = event['source']['userId']
-        client.push_message(user_id,message)
+        follow()
       end
       puts "########テストメッセージ##############"
-      puts event['type']
+      puts @event['type']
       puts "######################################"
     }
 
+  end
+
+  #友達登録されたときの処理
+  def follow
+    user_id = @event['source']['userId']
+    res = client.get_profile(user_id)
+    User.new(name: res['displayName'],line_id: user_id)
+    if User.save
+      message = {type: text,
+                 text: "友達登録ありがとう!!"
+      }
+      client.push_message(user_id,message)
+    end
   end
 
   def client
