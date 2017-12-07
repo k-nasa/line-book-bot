@@ -70,18 +70,16 @@ class LinebotController < ApplicationController
   def postback(event)
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
-    puts postback_data[0]
     case postback_data[0]
     when "登録キャンセル"
       message = {type: "text", text: "キャンセルしました"}
       client.push_message(user_id,message)
-      puts "登録キャンセル"
+
     when "本として登録"
       client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
-      puts "本として登録"
+
     when "作者として登録"
       client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
-      puts "作者として登録"
     end
   end
 
@@ -118,7 +116,7 @@ class LinebotController < ApplicationController
           {
             "type": "postback",
             "label": "本として登録",
-            "data": "本として登録"
+            "data": "本として登録\n#{event['message']['text']}"
           },
           {
             "type": "postback",
