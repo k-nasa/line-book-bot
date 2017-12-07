@@ -35,14 +35,20 @@ class LinebotController < ApplicationController
 
   #友達登録されたときの処理
   def follow(event)
+    puts event
     user_id = event['source']['userId']
     res = client.get_profile(user_id)
+    puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
     if user.save
       message = {type: text,
                  text: "友達登録ありがとう!!"
       }
       client.push_message(user_id,message)
+    else 
+      message = {type: text,
+                 text: "エラー"
+      }
     end
   end
 
