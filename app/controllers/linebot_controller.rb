@@ -60,7 +60,7 @@ class LinebotController < ApplicationController
   #ブロック時の処理
   def unfollow(event)
     user_id = event['source']['userId']
-    client.push_message(user_id,{type: "text",message: "byby"})
+    client.push_message(user_id,{type: "text",text: "byby"})
     user = User.find_by_line_id(user_id)
     if user 
       user.destroy
@@ -77,10 +77,10 @@ class LinebotController < ApplicationController
       client.push_message(user_id,message)
       puts "登録キャンセル"
     when "本として登録"
-      client.push_message(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
+      client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
       puts "本として登録"
     when "作者として登録"
-      client.push_message(user_id,{type: "text",message: "#{postback_data[1]}を登録"})
+      client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
       puts "作者として登録"
     end
   end
