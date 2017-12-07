@@ -60,7 +60,7 @@ class LinebotController < ApplicationController
   end
 
   def get_profile(user_id)
-    response = client.get_profile("<userId>")
+    response = client.get_profile(user_id)
     case response
     when Net::HTTPSuccess then
       contact = JSON.parse(response.body)
