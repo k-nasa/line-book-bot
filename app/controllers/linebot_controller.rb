@@ -69,6 +69,7 @@ class LinebotController < ApplicationController
   def postback(event)
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
+    puts postback_data[0]
     case postback_data[0]
     when "登録キャンセル"
       client.push_message(user_id,{type: "text",message: "キャンセルしました"})
