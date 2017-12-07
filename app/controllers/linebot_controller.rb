@@ -37,16 +37,16 @@ class LinebotController < ApplicationController
   def follow(event)
     puts event
     user_id = event['source']['userId']
-    res = client.get_profile(user_id)
+    res = get_profile(user_id)
     puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
     if user.save
-      message = {type: text,
+      message = {type: "text",
                  text: "友達登録ありがとう!!"
       }
       client.push_message(user_id,message)
     else 
-      message = {type: text,
+      message = {type: "text",
                  text: "エラー"
       }
     end
@@ -57,5 +57,18 @@ class LinebotController < ApplicationController
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
     }
+  end
+
+  def get_profile(user_id)
+    response = client.get_profile("<userId>")
+    case response
+    when Net::HTTPSuccess then
+      contact = JSON.parse(response.body)
+      p contact['displayName']
+      p contact['pictureUrl']
+      p contact['statusMessage']
+    else
+      p "#{response.code} #{response.body}"
+    end
   end
 end
