@@ -110,7 +110,7 @@ class LinebotController < ApplicationController
           {
             "type": "postback",
             "label": "作者として登録",
-            "data": {"text": "作者として登録","book": event['message']['text'] }
+            "data": {"text": "作者として登録","book": "test"}
           },
           {
             "type": "postback",
