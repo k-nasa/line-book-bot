@@ -21,6 +21,7 @@ class LinebotController < ApplicationController
       case event['type']
       when "message"
         message = {type: 'text' ,text: 'テストメッセージ'}
+        message = confirm_message
         user_id = event['source']['userId']
         client.push_message(user_id,message)
       when "follow"
@@ -79,5 +80,29 @@ class LinebotController < ApplicationController
     else
       p "#{response.code} #{response.body}"
     end
+  end
+
+
+  def confirm_message
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+        "type": "confirm",
+        "text": "Are you sure?",
+        "actions": [
+          {
+            "type": "message",
+            "label": "Yes",
+            "text": "yes"
+          },
+          {
+            "type": "message",
+            "label": "No",
+            "text": "no"
+          }
+        ]
+      }
+    }
   end
 end
