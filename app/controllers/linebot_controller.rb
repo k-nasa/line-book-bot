@@ -1,6 +1,7 @@
 class LinebotController < ApplicationController
   require 'line/bot'
   include LinebotHelper
+  include ScrapHelper
   protect_from_forgery :except => [:callback]
   
   def get_callback
@@ -72,9 +73,9 @@ class LinebotController < ApplicationController
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
     case postback_data[0]
-    when "登録キャンセル"
-      message = {type: "text", text: "キャンセルしました"}
-      client.push_message(user_id,message)
+    # when "登録キャンセル"
+    #   message = {type: "text", text: "キャンセルしました"}
+    #   client.push_message(user_id,message)
 
     when "本として登録"
       save_list(event,'book')
@@ -96,7 +97,7 @@ class LinebotController < ApplicationController
     end
   end
 
-  def client
+q def client
     @clinet ||= Line::Bot::Client.new{ |config| 
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
@@ -132,11 +133,11 @@ class LinebotController < ApplicationController
             "label": "作者として登録",
             "data": "作者として登録\n#{event['message']['text']}"
           },
-          {
-            "type": "postback",
-            "label": "登録キャンセル",
-            "data": "登録キャンセル"
-          }
+          # {
+          #   "type": "postback",
+          #   "label": "登録キャンセル",
+          #   "data": "登録キャンセル"
+          # }
         ]
       }
     }
