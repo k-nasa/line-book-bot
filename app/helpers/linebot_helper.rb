@@ -12,12 +12,21 @@ module LinebotHelper
         end 
       else
         client.push_message(user_id,{type: "text",text: "「#{postback_data[1]}」はすでに登録済みです (type:#{type})"})
-        client.push_message(user_id,yes_or_no_form)
+        client.push_message(user_id,yes_or_no_form(postback_data[1],type))
       end
     end
   end
 
   #購読リストから削除
+  def remove_list(event)
+    user_id = event['source']['userId']
+    data = event['postback']['data'].split("\n")
+    user = User.find_by_line_id(user_id)
+    if  list = user.SubscriptionList.find_by(type: data[2],content: data[1] )
+      list.destroy
+      client.push_message(user_id,{type: "text",text: "「#{data[1]}]をリストから削除しました(type:#{data[2]})")
+    end
+  end
 
 
   #購読リストを表示
@@ -40,26 +49,27 @@ module LinebotHelper
   end
 
 
-  def yes_or_no_form
-    {
+  def yes_or_no_form(title,type)
+        {
       "type": "template",
-      "altText": "this is a confirm template",
+      "altText": "this is a buttons template",
       "template": {
-        "type": "confirm",
-        "text": "リストから削除しますか？",
+        "type": "buttons",
+        "text": "#{title}をリストから削除しますか？",
         "actions": [
           {
-            "type": "message",
-            "label": "yes",
-            "text": "yes"
+            "type": "postback",
+            "label": "削除",
+            "data": "list_delete\n#{title}\n#{type}"
           },
           {
-            "type": "message",
-            "label": "No",
-            "text": "no"
+            "type": "postback",
+            "label": "残す",
+            "data": "leave"
           }
         ]
       }
     }
+
   end
 end

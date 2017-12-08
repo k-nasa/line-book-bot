@@ -86,6 +86,12 @@ class LinebotController < ApplicationController
     when "list"
       show_my_list(event)
 
+    when "list_delete"
+      remove_list(event)
+    when "leave"
+      client.push_message(user_id,{type: "text",text: "リストに残します"})
+      
+
     when "notify"
       # client.push_message(user_id,{type: "text",text: "最近通知したリスト"})
       message = ""
