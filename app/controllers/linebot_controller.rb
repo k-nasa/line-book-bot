@@ -111,7 +111,7 @@ class LinebotController < ApplicationController
       "template": {
         "type": "buttons",
         # "title": "Menu",
-        # "text": "Please select",
+        "text": "",
         "actions": [
           {
             "type": "postback",
