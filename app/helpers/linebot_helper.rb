@@ -24,7 +24,7 @@ module LinebotHelper
     user = User.find_by_line_id(user_id)
     if  list = user.SubscriptionList.find_by(type: data[2],content: data[1] )
       list.destroy
-      client.push_message(user_id,{type: "text",text: "「#{data[1]}]をリストから削除しました(type:#{data[2]})")
+      client.push_message(user_id,{type: "text",text: "「#{data[1]}」をリストから削除しました(type:#{data[2]})"})
     end
   end
 
