@@ -12,9 +12,13 @@ module LinebotHelper
         end 
       else
         client.push_message(user_id,{type: "text",text: "「#{postback_data[1]}」はすでに登録済みです (type:#{type})"})
+        client.push_message(user_id,yes_or_no_form)
       end
     end
   end
+
+  #購読リストから削除
+
 
   #購読リストを表示
   def show_my_list(event)
@@ -33,5 +37,29 @@ module LinebotHelper
     end
 
     client.push_message(user_id,{type: 'text',text: message})
+  end
+
+
+  def yes_or_no_form
+    {
+      "type": "template",
+      "altText": "this is a confirm template",
+      "template": {
+        "type": "confirm",
+        "text": "リストから削除しますか？",
+        "actions": [
+          {
+            "type": "message",
+            "label": "yes",
+            "text": "yes"
+          },
+          {
+            "type": "message",
+            "label": "No",
+            "text": "no"
+          }
+        ]
+      }
+    }
   end
 end
