@@ -84,9 +84,9 @@ class LinebotController < ApplicationController
     when "list"
       client.push_message(user_id,{type: "text",text: "購読リスト"})
     when "notify"
-      client.push_message(user_id,{type: "text",text: "購読リスト"})
+      client.push_message(user_id,{type: "text",text: "最近通知したリスト"})
     when "how_to"
-      client.push_message(user_id,{type: "text",text: "購読リスト"})
+      client.push_message(user_id,{type: "text",text: "使い方"})
     end
   end
 
