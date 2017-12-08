@@ -23,11 +23,11 @@ module LinebotHelper
     aouthor_list = user.SubscriptionList.where(record_type: "aouthor")
     book_list = user.SubscriptionList.where(record_type: "book")
 
-    message = "作者リスト\n"
+    message = "-----作者リスト-----\n"
     aouthor_list.each do |aouthor|
       message += aouthor.content + "\n"
     end
-    message += "\n本リスト\n"
+    message += "\n------本リスト-----\n"
     book_list.each do |book|
       message += book.content + "\n"
     end
