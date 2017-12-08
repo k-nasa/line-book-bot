@@ -110,8 +110,8 @@ class LinebotController < ApplicationController
       "altText": "this is a buttons template",
       "template": {
         "type": "buttons",
-        "title": "Menu",
-        "text": "Please select",
+        # "title": "Menu",
+        # "text": "Please select",
         "actions": [
           {
             "type": "postback",
