@@ -80,6 +80,13 @@ class LinebotController < ApplicationController
 
     when "作者として登録"
       client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
+
+    when "list"
+      client.push_message(user_id,{type: "text",text: "購読リスト"})
+    when "notify"
+      client.push_message(user_id,{type: "text",text: "購読リスト"})
+    when "how_to"
+      client.push_message(user_id,{type: "text",text: "購読リスト"})
     end
   end
 
