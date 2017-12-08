@@ -73,9 +73,6 @@ class LinebotController < ApplicationController
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
     case postback_data[0]
-    # when "登録キャンセル"
-    #   message = {type: "text", text: "キャンセルしました"}
-    #   client.push_message(user_id,message)
 
     when "本として登録"
       save_list(event,'book')
@@ -93,12 +90,12 @@ class LinebotController < ApplicationController
       
 
     when "notify"
-      # client.push_message(user_id,{type: "text",text: "最近通知したリスト"})
       message = ""
       get_book_list.each do |book|
         message += "\n#{book}\n"
       end
       client.push_message(user_id,{type: "text",text: message})
+
     when "how_to"
       client.push_message(user_id,{type: "text",text: "使い方"})
     end
@@ -140,12 +137,7 @@ class LinebotController < ApplicationController
             "type": "postback",
             "label": "作者として登録",
             "data": "作者として登録\n#{event['message']['text']}"
-          },
-          # {
-          #   "type": "postback",
-          #   "label": "登録キャンセル",
-          #   "data": "登録キャンセル"
-          # }
+          }
         ]
       }
     }

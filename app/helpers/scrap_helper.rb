@@ -11,8 +11,8 @@ module ScrapHelper
 
     doc = Nokogiri::HTML.parse(html)
 
-    # day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
-    day =  doc.xpath('//td[@class="products-td"]')[0]
+    day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
+    # day =  doc.xpath('//td[@class="products-td"]')[0]
     book_list = day.search("div.product-description-right a")
 
     list  = []
@@ -23,5 +23,12 @@ module ScrapHelper
       list << "発売なし"
     end
     p list
+  end
+
+
+  #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
+  def list_notify
+    bool_list = get_book_list
+
   end
 end
