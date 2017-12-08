@@ -37,7 +37,7 @@ module LinebotHelper
           client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を購読リストに保存しました(type:#{type})"})
         end 
       else
-        client.push_message(user_id,{type: "text,text: #{postback_data[1]}はすでに登録済みです"})
+        client.push_message(user_id,{type: "text",text: "#{postback_data[1]}はすでに登録済みです"})
       end
     end
   end
