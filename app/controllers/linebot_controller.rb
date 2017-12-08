@@ -84,7 +84,8 @@ class LinebotController < ApplicationController
       save_list(event,"author")
 
     when "list"
-      client.push_message(user_id,{type: "text",text: "購読リスト"})
+      show_my_list(event)
+
     when "notify"
       # client.push_message(user_id,{type: "text",text: "最近通知したリスト"})
       message = ""
@@ -103,6 +104,7 @@ class LinebotController < ApplicationController
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
     }
   end
+
 
   def get_profile(user_id)
     response = client.get_profile(user_id)
