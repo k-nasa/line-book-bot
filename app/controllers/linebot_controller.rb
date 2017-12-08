@@ -1,5 +1,6 @@
 class LinebotController < ApplicationController
   require 'line/bot'
+  require LinebotHelper
   protect_from_forgery :except => [:callback]
   
   def get_callback
