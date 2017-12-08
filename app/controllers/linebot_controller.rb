@@ -77,10 +77,10 @@ class LinebotController < ApplicationController
       client.push_message(user_id,message)
 
     when "本として登録"
-      client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
+      save_list(event,'book')
 
     when "作者として登録"
-      client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を登録"})
+      save_list(event,"author")
 
     when "list"
       client.push_message(user_id,{type: "text",text: "購読リスト"})
@@ -108,9 +108,6 @@ class LinebotController < ApplicationController
     case response
     when Net::HTTPSuccess then
       contact = JSON.parse(response.body)
-      # p contact['displayName']
-      # p contact['pictureUrl']
-      # p contact['statusMessage']
     else
       p "#{response.code} #{response.body}"
     end

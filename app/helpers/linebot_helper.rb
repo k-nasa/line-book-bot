@@ -24,4 +24,18 @@ module LinebotHelper
     end
     p list
   end
+
+  #購読リストを登録
+  def save_list(event,type)
+    user_id = event['source']['userId']
+    postback_data = event['postback']['data'].split("\n")
+    user = User.find_by_line_id(user_id)
+    if user
+      record = user.SubscriptionList.find_by_content(postback_data[1])
+      record  = user.SubscriptionList.build(record_type: type,content: postback_data[1] ) unless record
+      if record.save
+        client.push_message(user_id,{type: "text",text: "#{postback_data[0]}を購読本リストに保存しました"})
+      end 
+    end
+  end
 end
