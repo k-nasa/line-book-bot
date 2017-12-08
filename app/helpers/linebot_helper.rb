@@ -34,8 +34,10 @@ module LinebotHelper
       unless user.SubscriptionList.find_by(record_type: type,content: postback_data[1])
         record  = user.SubscriptionList.build(record_type: type,content: postback_data[1] ) 
         if record.save
-          client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を購読リストに保存しました(type#{type})"})
+          client.push_message(user_id,{type: "text",text: "#{postback_data[1]}を購読リストに保存しました(type:#{type})"})
         end 
+      else
+        client.push_message(user_id,{tyep: "text,text: #{postback_data[1]}はすでに登録済みです"})
       end
     end
   end
