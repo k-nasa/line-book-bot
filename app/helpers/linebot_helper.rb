@@ -56,7 +56,7 @@ module LinebotHelper
     uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu/richmenu-edf544d38aa137658fd0b9d9a1526008")
     puts "テスト"
     request = Net::HTTP::Post.new(uri)
-    request["Authorization"] = "Bearer #{ENV["LINE_CHANNEL_SECRET"]}"
+    request["Authorization"] = "Bearer #{ENV["LINE_CHANNEL_TOKEN"]}"
     request["Content-Length"] = "0"
 
     req_options = {
