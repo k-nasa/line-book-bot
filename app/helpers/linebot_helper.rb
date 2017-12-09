@@ -1,4 +1,6 @@
 module LinebotHelper
+  require 'net/http'
+  require 'uri'
   #購読リストを登録
   def save_list(event,type)
     user_id = event['source']['userId']
@@ -46,6 +48,23 @@ module LinebotHelper
     end
 
     client.push_message(user_id,{type: 'text',text: message})
+  end
+
+  #友達登録時にリッチメニューを設定
+  def link_menu(event)
+    user_id = event['source']['userId']
+    uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu/richmenu-edf544d38aa137658fd0b9d9a1526008")
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Bearer #{ENV["LINE_CHANNEL_SECRET"]}"
+    request["Content-Length"] = "0"
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
   end
 
 

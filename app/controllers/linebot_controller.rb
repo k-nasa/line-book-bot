@@ -52,6 +52,7 @@ class LinebotController < ApplicationController
                  text: "友達登録ありがとう!!\n使い方はこちらを参照"
       }
       client.push_message(user_id,message)
+      link_menu(event)
     else 
       message = {type: "text",
                  text: "エラー"}
