@@ -30,7 +30,7 @@ module ScrapHelper
   def list_notify
     book_list = get_book_list
     book_list.each do |title|
-      if much = SubscriptionList.where(content: title)
+      if much = SubscriptionList.where("content like '%"+ title +"%'")
         much.each do |much_book|
           user_id = much_book.user.line_id
           client.push_message(user_id,{type: "text",text: "#{title}"})
