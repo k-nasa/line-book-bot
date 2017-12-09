@@ -28,7 +28,13 @@ module ScrapHelper
 
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
   def list_notify
-    bool_list = get_book_list
+    book_list = get_book_list
+    book_list.each do |title|
+      if much = SubscriptionList.where(contet: title)
+        user_id = much.user.line_id
+        client.push_message(user_id,{type: "text",text: "#{title}"})
+      end
+    end
 
   end
 end

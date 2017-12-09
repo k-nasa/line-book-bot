@@ -90,11 +90,12 @@ class LinebotController < ApplicationController
       
 
     when "notify"
-      message = ""
-      get_book_list.each do |book|
-        message += "\n#{book}\n"
-      end
-      client.push_message(user_id,{type: "text",text: message})
+      # message = ""
+      # get_book_list.each do |book|
+      #   message += "\n#{book}\n"
+      # end
+      # client.push_message(user_id,{type: "text",text: message})
+      list_notify
 
     when "how_to"
       client.push_message(user_id,{type: "text",text: "使い方"})
