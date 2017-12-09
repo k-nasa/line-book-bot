@@ -31,8 +31,10 @@ module ScrapHelper
     book_list = get_book_list
     book_list.each do |title|
       if much = SubscriptionList.where(contet: title)
-        user_id = much.user.line_id
-        client.push_message(user_id,{type: "text",text: "#{title}"})
+        much.each do |user|
+          user_id = much.user.line_id
+          client.push_message(user_id,{type: "text",text: "#{title}"})
+        end
       end
     end
 
