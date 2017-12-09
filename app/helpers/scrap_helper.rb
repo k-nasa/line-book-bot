@@ -22,7 +22,7 @@ module ScrapHelper
     if list.empty?
       list << "発売なし"
     end
-    p list
+    # p list
   end
 
 
@@ -31,6 +31,7 @@ module ScrapHelper
     book_list = get_book_list
     book_list.each do |title|
       SubscriptionList.all.each do |list|
+        puts title
         if title.include?(list.content)
           user_id = list.user.line_id
           client.push_message(user_id,{type: "text",text: "#{title}"})

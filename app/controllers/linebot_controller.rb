@@ -102,6 +102,10 @@ class LinebotController < ApplicationController
     end
   end
 
+  def notify
+    list_notify
+  end
+
   def client
     @clinet ||= Line::Bot::Client.new{ |config| 
       config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
