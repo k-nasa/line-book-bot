@@ -54,6 +54,7 @@ module LinebotHelper
   def link_menu(event)
     user_id = event['source']['userId']
     uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu/richmenu-edf544d38aa137658fd0b9d9a1526008")
+    puts "テスト"
     request = Net::HTTP::Post.new(uri)
     request["Authorization"] = "Bearer #{ENV["LINE_CHANNEL_SECRET"]}"
     request["Content-Length"] = "0"
