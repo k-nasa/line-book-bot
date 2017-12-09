@@ -102,7 +102,7 @@ class LinebotController < ApplicationController
     end
   end
 
-  def notify
+  def periodic_execution
     list_notify
   end
 
