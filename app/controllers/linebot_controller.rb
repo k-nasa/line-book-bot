@@ -48,11 +48,11 @@ class LinebotController < ApplicationController
     puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
     if user.save
+      link_menu(event)
       message = {type: "text",
                  text: "友達登録ありがとう!!\n使い方はこちらを参照"
       }
       client.push_message(user_id,message)
-      link_menu(event)
     else 
       message = {type: "text",
                  text: "エラー"}
