@@ -17,7 +17,7 @@ module ScrapHelper
 
     list  = []
     book_list.each do  |title|
-      list << title.inner_text.strip.gsub(/\(.*?\)/,"")
+      list << title.inner_text.gsub(/\(.*?\)/,"").strip
     end
     if list.empty?
       list << "発売なし"
