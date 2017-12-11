@@ -18,25 +18,23 @@ class LinebotController < ApplicationController
       error 400 do 'Bad Request' end
     end
 
-    events = client.parse_events_from(body)
-    events.each { |event|
-      case event['type']
-      when "message"
-        message = {type: 'text' ,text: 'テストメッセージ'}
-        message = confirm_message(event)
-        user_id = event['source']['userId']
-        client.push_message(user_id,message)
+    event = client.parse_events_from(body)
+    case event['type']
+    when "message"
+      message = {type: 'text' ,text: 'テストメッセージ'}
+      message = confirm_message(event)
+      user_id = event['source']['userId']
+      client.push_message(user_id,message)
 
-      when "follow"
-        follow(event)
+    when "follow"
+      follow(event)
 
-      when "unfollow"
-        unfollow(event)
+    when "unfollow"
+      unfollow(event)
 
-      when "postback"
-        postback(event)
-      end
-    }
+    when "postback"
+      postback(event)
+    end
   end
 
 
@@ -70,6 +68,7 @@ class LinebotController < ApplicationController
     end
   end
 
+  #postbackリクエスト時の処理
   def postback(event)
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
@@ -103,49 +102,53 @@ class LinebotController < ApplicationController
     end
   end
 
+  #定期実行
   def periodic_execution
     list_notify
   end
 
-  def client
-    @clinet ||= Line::Bot::Client.new{ |config| 
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
-    }
-  end
-
-
-  def get_profile(user_id)
-    response = client.get_profile(user_id)
-    case response
-    when Net::HTTPSuccess then
-      contact = JSON.parse(response.body)
-    else
-      p "#{response.code} #{response.body}"
-    end
-  end
-
-
-  def confirm_message(event)
-    {
-      "type": "template",
-      "altText": "this is a buttons template",
-      "template": {
-        "type": "buttons",
-        "text": "Please select",
-        "actions": [
-          {
-            "type": "postback",
-            "label": "本として登録",
-            "data": "本として登録\n#{event['message']['text']}"
-          },
-          {
-            "type": "postback",
-            "label": "作者として登録",
-            "data": "作者として登録\n#{event['message']['text']}"
-          }
-        ]
+  private
+    def client
+      @clinet ||= Line::Bot::Client.new{ |config| 
+        config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+        config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
       }
-    }
-  end
+    end
+
+
+    def get_profile(user_id)
+      response = client.get_profile(user_id)
+      case response
+      when Net::HTTPSuccess then
+        contact = JSON.parse(response.body)
+      else
+        p "#{response.code} #{response.body}"
+      end
+    end
+
+
+    def confirm_message(event)
+      {
+        "type": "template",
+        "altText": "this is a buttons template",
+        "template": {
+          "type": "buttons",
+          "text": "Please select",
+          "actions": [
+            {
+              "type": "postback",
+              "label": "本として登録",
+              "data": "本として登録\n#{event['message']['text']}"
+            },
+            {
+              "type": "postback",
+              "label": "作者として登録",
+              "data": "作者として登録\n#{event['message']['text']}"
+            }
+          ]
+        }
+      }
+    end
+
+
 end
