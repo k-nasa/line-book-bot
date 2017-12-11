@@ -35,7 +35,7 @@ module LinebotHelper
   def show_my_list(event)
     user_id = event['source']['userId']
     user = User.find_by_line_id(user_id)
-    aouthor_list = user.SubscriptionList.where(record_type: "aouthor")
+    aouthor_list = user.SubscriptionList.where(record_type: "author")
     book_list = user.SubscriptionList.where(record_type: "book")
 
     message = "-----作者リスト-----\n"
