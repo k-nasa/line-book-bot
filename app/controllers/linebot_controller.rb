@@ -11,7 +11,7 @@ class LinebotController < ApplicationController
 
   def callback
     body = request.body.read
-    event = params['events']
+    event = params['events'][0]
 
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
