@@ -10,16 +10,6 @@ class LinebotController < ApplicationController
 
 
   def callback
-    body = request.body.read
-    event = params['events'][0]
-
-
-    signature = request.env['HTTP_X_LINE_SIGNATURE']
-    unless client.validate_signature(body, signature)
-      error 400 do 'Bad Request' end
-    end
-
-    events = client.parse_events_from(body)
 
     case event['type']
     when "message"
@@ -115,6 +105,10 @@ class LinebotController < ApplicationController
         config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
         config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
       }
+    end
+
+    def event
+      params['events'][0]
     end
 
 
