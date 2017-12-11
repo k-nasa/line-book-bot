@@ -38,13 +38,15 @@ module ScrapHelper
         end
       end
 
-      p destination_list
-
-      destination_list.each do |user_id,title_list|
-        message = title_list.join("\n")
-        client.push_message(user_id,{type: 'text',text: message})
-      end
     end
+
+    p destination_list
+
+    destination_list.each do |user_id,title_list|
+      message = title_list.join("\n")
+      client.push_message(user_id,{type: 'text',text: message})
+    end
+
 
   end
 end
