@@ -36,13 +36,6 @@ module ScrapHelper
           client.push_message(user_id,{type: "text",text: "#{title}"})
         end
       end
-
-      # if much = SubscriptionList.where("content like '%"+ title +"%'")
-      #   much.each do |much_book|
-      #     user_id = much_book.user.line_id
-      #     client.push_message(user_id,{type: "text",text: "#{title}"})
-      #   end
-      # end
     end
 
   end

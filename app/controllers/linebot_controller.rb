@@ -67,10 +67,10 @@ class LinebotController < ApplicationController
     case postback_data[0]
 
     when "本として登録"
-      save_list(event,'book')
+      save_list('book')
 
     when "作者として登録"
-      save_list(event,"author")
+      save_list('author')
 
     when "list"
       show_my_list
