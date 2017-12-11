@@ -33,9 +33,8 @@ module ScrapHelper
     book_list.each do |title|
       SubscriptionList.all.each do |list|
         if title.include?(list.content)
-          destination_list[list.user.line_id]
-          destination_list[list.user.line_id] = [] if destination_list[list.user.line_id]
-         destination_list[list.user.line_id] << title
+          destination_list[list.user.line_id] = []  unless destination_list.has_key?(list.user.line_id)
+          destination_list[list.user.line_id] << title
         end
       end
 
@@ -44,7 +43,7 @@ module ScrapHelper
     p destination_list
 
     destination_list.each do |user_id,title_list|
-      message = title_list.join("\n")
+      message = "---本日発売の本---\n"+title_list.join("\n")
       client.push_message(user_id,{type: 'text',text: message})
     end
 
