@@ -33,7 +33,6 @@ class LinebotController < ApplicationController
 
   #友達登録されたときの処理
   def follow
-    user_id = event['source']['userId']
     res = get_profile(user_id)
     puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
@@ -109,6 +108,10 @@ class LinebotController < ApplicationController
 
     def event
       @event ||= params['events'][0]
+    end
+
+    def user_id
+      @user_id = event['source']['userId']
     end
 
 
