@@ -29,12 +29,18 @@ module ScrapHelper
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
   def list_notify
     book_list = get_book_list
+    destination_list = {}
     book_list.each do |title|
       SubscriptionList.all.each do |list|
         if title.include?(list.content)
-          user_id = list.user.line_id
-          client.push_message(user_id,{type: "text",text: "#{title}"})
+         destination_list[list.user.line_id] = []
+         destination_list[list.user.line_id] << title
         end
+      end
+
+      destination_list.each do |user_id,title_list|
+        message = title_list.join("\n")
+        client.push_message(user_id,{type: 'text',text: message})
       end
     end
 
