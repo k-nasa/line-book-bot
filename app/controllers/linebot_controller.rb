@@ -11,6 +11,7 @@ class LinebotController < ApplicationController
 
   def callback
     body = request.body.read
+    event = params['events']
 
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -18,7 +19,8 @@ class LinebotController < ApplicationController
       error 400 do 'Bad Request' end
     end
 
-    event = client.parse_events_from(body)
+    events = client.parse_events_from(body)
+
     case event['type']
     when "message"
       message = {type: 'text' ,text: 'テストメッセージ'}
