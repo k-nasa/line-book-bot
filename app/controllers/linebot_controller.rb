@@ -2,7 +2,7 @@ class LinebotController < ApplicationController
   require 'line/bot'
   include LinebotHelper
   include ScrapHelper
-  # protect_from_forgery :except => [:callback]
+  protect_from_forgery :except => [:callback]
   
   def get_callback
     render plain: "hello"
