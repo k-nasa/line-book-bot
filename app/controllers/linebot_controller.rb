@@ -14,31 +14,31 @@ class LinebotController < ApplicationController
     case event['type']
     when "message"
       message = {type: 'text' ,text: 'テストメッセージ'}
-      message = confirm_message(event)
+      message = confirm_message
       user_id = event['source']['userId']
       client.push_message(user_id,message)
 
     when "follow"
-      follow(event)
+      follow
 
     when "unfollow"
-      unfollow(event)
+      unfollow
 
     when "postback"
-      postback(event)
+      postback
     end
   end
 
 
 
   #友達登録されたときの処理
-  def follow(event)
+  def follow
     user_id = event['source']['userId']
     res = get_profile(user_id)
     puts res['displayName']
     user = User.new(name: res['displayName'],line_id: user_id)
     if user.save
-      link_menu(event)
+      link_menu
       message = {type: "text",
                  text: "友達登録ありがとう!!\n使い方はこちらを参照"
       }
@@ -51,7 +51,7 @@ class LinebotController < ApplicationController
   end
 
   #ブロック時の処理
-  def unfollow(event)
+  def unfollow
     user_id = event['source']['userId']
     client.push_message(user_id,{type: "text",text: "byby"})
     user = User.find_by_line_id(user_id)
@@ -61,7 +61,7 @@ class LinebotController < ApplicationController
   end
 
   #postbackリクエスト時の処理
-  def postback(event)
+  def postback
     postback_data = event['postback']['data'].split("\n")
     user_id = event['source']['userId']
     case postback_data[0]
@@ -73,10 +73,10 @@ class LinebotController < ApplicationController
       save_list(event,"author")
 
     when "list"
-      show_my_list(event)
+      show_my_list
 
     when "list_delete"
-      remove_list(event)
+      remove_list
     when "leave"
       client.push_message(user_id,{type: "text",text: "リストに残します"})
       
@@ -108,7 +108,7 @@ class LinebotController < ApplicationController
     end
 
     def event
-      params['events'][0]
+      @event ||= params['events'][0]
     end
 
 
@@ -123,7 +123,7 @@ class LinebotController < ApplicationController
     end
 
 
-    def confirm_message(event)
+    def confirm_message
       {
         "type": "template",
         "altText": "this is a buttons template",
