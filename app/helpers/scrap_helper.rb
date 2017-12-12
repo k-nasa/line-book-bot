@@ -33,7 +33,7 @@ module ScrapHelper
     book_list.each do |title|
       SubscriptionList.all.each do |list|
         if title.include?(list.content)
-          destination_list[list.user.line_id] = []  unless destination_list.has_key?(list.user.line_id)
+          destination_list[list.user.line_id] ||= []  
           destination_list[list.user.line_id] << title
         end
       end

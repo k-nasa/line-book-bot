@@ -3,7 +3,6 @@ module LinebotHelper
   require 'uri'
   #購読リストを登録
   def save_list(type)
-    user_id = event['source']['userId']
     postback_data = event['postback']['data'].split("\n").map(&:strip)
     user = User.find_by_line_id(user_id)
     if user
@@ -21,7 +20,6 @@ module LinebotHelper
 
   #購読リストから削除
   def remove_list
-    user_id = event['source']['userId']
     data = event['postback']['data'].split("\n")
     user = User.find_by_line_id(user_id)
     if  list = user.SubscriptionList.find_by(record_type: data[2],content: data[1] )
@@ -33,7 +31,6 @@ module LinebotHelper
 
   #購読リストを表示
   def show_my_list
-    user_id = event['source']['userId']
     user = User.find_by_line_id(user_id)
     aouthor_list = user.SubscriptionList.where(record_type: "author")
     book_list = user.SubscriptionList.where(record_type: "book")
@@ -52,7 +49,6 @@ module LinebotHelper
 
   #友達登録時にリッチメニューを設定
   def link_menu
-    user_id = event['source']['userId']
     uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu/#{ENV["RICH_MENU"]}")
     puts "テスト"
     request = Net::HTTP::Post.new(uri)
