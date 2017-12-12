@@ -34,7 +34,7 @@ module ScrapHelper
       SubscriptionList.all.each do |list|
         if title.include?(list.content)
           destination_list[list.user.line_id] ||= []  
-          destination_list[list.user.line_id] << title
+          destination_list[list.user.line_id] << "・"+ title
         end
       end
 
