@@ -13,7 +13,7 @@ class LinebotController < ApplicationController
 
     case event['type']
     when "message"
-      case event['message']
+      case event['message']['text']
       when "購読リスト"
         show_my_list
       when "最近の通知"
