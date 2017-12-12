@@ -13,9 +13,18 @@ class LinebotController < ApplicationController
 
     case event['type']
     when "message"
-      message = {type: 'text' ,text: 'テストメッセージ'}
-      message = confirm_message
-      client.push_message(user_id,message)
+      case event['message']
+      when "購読リスト"
+        show_my_list
+      when "最近の通知"
+        list_notify
+      when "使い方"
+        client.push_message(user_id,{type: "text",text: "使い方"})
+
+      else
+        message = confirm_message
+        client.push_message(user_id,message)
+      end
 
     when "follow"
       follow
@@ -69,21 +78,15 @@ class LinebotController < ApplicationController
     when "作者として登録"
       save_list('author')
 
-    when "list"
-      show_my_list
-
     when "list_delete"
       remove_list
     when "leave"
       client.push_message(user_id,{type: "text",text: "リストに残します"})
-      
+
+    when "list"
+      show_my_list
 
     when "notify"
-      # message = ""
-      # get_book_list.each do |book|
-      #   message += "\n#{book}\n"
-      # end
-      # client.push_message(user_id,{type: "text",text: message})
       list_notify
 
     when "how_to"
