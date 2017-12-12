@@ -64,6 +64,20 @@ module LinebotHelper
     end
   end
 
+  def unlink_menu
+    uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu")
+    request = NET::HTTP::DELETE.new(uri)
+    request["Authorization"] = "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+  end
+
 
   def yes_or_no_form(title,type)
         {

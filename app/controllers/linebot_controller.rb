@@ -15,7 +15,6 @@ class LinebotController < ApplicationController
     when "message"
       message = {type: 'text' ,text: 'テストメッセージ'}
       message = confirm_message
-      user_id = event['source']['userId']
       client.push_message(user_id,message)
 
     when "follow"
@@ -51,8 +50,8 @@ class LinebotController < ApplicationController
 
   #ブロック時の処理
   def unfollow
-    user_id = event['source']['userId']
     client.push_message(user_id,{type: "text",text: "byby"})
+    unlink_menu
     user = User.find_by_line_id(user_id)
     if user 
       user.destroy
@@ -62,7 +61,6 @@ class LinebotController < ApplicationController
   #postbackリクエスト時の処理
   def postback
     postback_data = event['postback']['data'].split("\n")
-    user_id = event['source']['userId']
     case postback_data[0]
 
     when "本として登録"
