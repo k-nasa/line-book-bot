@@ -66,7 +66,7 @@ module LinebotHelper
 
   def unlink_menu
     uri = URI.parse("https://api.line.me/v2/bot/user/#{user_id}/richmenu")
-    request = NET::HTTP::DELETE.new(uri)
+    request = Net::HTTP::DELETE.new(uri)
     request["Authorization"] = "Bearer #{ENV['LINE_CHANNEL_TOKEN']}"
 
     req_options = {
