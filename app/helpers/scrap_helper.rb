@@ -12,7 +12,7 @@ module ScrapHelper
     doc = Nokogiri::HTML.parse(html)
 
     day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
-    # day =  doc.xpath('//td[@class="products-td"]')[1]
+    # day =  doc.xpath('//td[@class="products-td"]')[Date.today.day]
     book_list = day.search("div.product-description-right a")
 
     list  = []
