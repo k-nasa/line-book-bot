@@ -24,7 +24,7 @@ module ScrapHelper
 
     destination_list = {}
     novel_list.each do |title,author|
-      title_verification(title,author)
+      title_verification(title,author,destination_list)
     end
 
     p destination_list
@@ -35,8 +35,7 @@ module ScrapHelper
     end
   end
 
-  def title_verification(title,author)
-    destination_list = {}
+  def title_verification(title,author,destination_list)
     SubscriptionList.all.each do |list|
       case list.record_type
       when "book"
