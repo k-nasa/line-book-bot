@@ -77,10 +77,8 @@ module ScrapHelper
 
     author_list = []
     authors.each do |parson|
-      author_list << parson.inner_text.strip
+      author_list << parson.inner_text.gsub(" ", "") 
     end
-
-    p author_list
 
     p Hash[book_list.zip(author_list)]
 
