@@ -24,11 +24,11 @@ module ScrapHelper
 
     destination_list = {}
     novel_list.each do |title,author|
-      title_verification(title,author,destination_list) if title.any?
+      title_verification(title,author,destination_list) unless title.empty?
     end
     
     comic_list.each do |title,author|
-      title_verification(title,author,destination_list) if title.any?
+      title_verification(title,author,destination_list) unless title.empty?
     end
 
     p destination_list
