@@ -19,7 +19,7 @@ class LinebotController < ApplicationController
       when "最近の通知"
         list_notify
       when "使い方"
-        client.push_message(user_id,{type: "text",text: "使い方"})
+        client.push_message(user_id,{type: "text",text: "使い方\nhttps://github.com/nasaemon/line-book-bot/blob/master/README.md"})
 
       else
         message = confirm_message
