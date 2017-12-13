@@ -24,11 +24,11 @@ module ScrapHelper
 
     destination_list = {}
     novel_list.each do |title,author|
-      title_verification(title,author,destination_list) unless title.empty?
+      title_verification(title,author,destination_list) unless title == "発売なし"
     end
     
     comic_list.each do |title,author|
-      title_verification(title,author,destination_list) unless title.empty?
+      title_verification(title,author,destination_list) unless title == "発売なし"
     end
 
     p destination_list
@@ -78,6 +78,9 @@ module ScrapHelper
     author_list = []
     authors.each do |parson|
       author_list << parson.inner_text.gsub(" ", "") 
+    end
+    if author_list.empty?
+      author_list << "発売なし"
     end
 
     p Hash[book_list.zip(author_list)]
