@@ -47,7 +47,7 @@ class LinebotController < ApplicationController
     if user.save
       link_menu
       message = {type: "text",
-                 text: "友達登録ありがとう!!\n使い方はこちらを参照"
+                 text: "友達登録ありがとう!!\n使い方はこちらを参照\nhttps://github.com/nasaemon/line-book-bot/blob/master/README.md"
       }
       client.push_message(user_id,message)
     else 
