@@ -3,41 +3,28 @@ module ScrapHelper
   require 'open-uri'
   require 'net/http'
 
-  def get_book_list
+  def get_novel_list
     url = 'https://calendar.gameiroiro.com/litenovel.php'
-
-
-    html = open(url).read
-
-    doc = Nokogiri::HTML.parse(html)
-
-    day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
-    # day =  doc.xpath('//td[@class="products-td"]')[Date.today.day]
-    book_list = day.search("div.product-description-right a")
-
-    list  = []
-    book_list.each do  |title|
-      list << title.inner_text.gsub(/\(.*?\)/,"").strip
-    end
-    if list.empty?
-      list << "発売なし"
-    end
-    p list
+    scraping(url)
   end
+
+
+
+  def get_comic_list
+    url = 'https://calendar.gameiroiro.com/manga.php'
+    scraping(url)
+  end
+
 
 
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
   def list_notify
-    book_list = get_book_list
-    destination_list = {}
-    book_list.each do |title|
-      SubscriptionList.all.each do |list|
-        if title.include?(list.content)
-          destination_list[list.user.line_id] ||= []  
-          destination_list[list.user.line_id] << "・"+ title
-        end
-      end
+    novel_list = get_novel_list
+    comic_list = get_comic_list
 
+    destination_list = {}
+    novel_list.each do |title,author|
+      title_verification(title,author)
     end
 
     p destination_list
@@ -46,7 +33,54 @@ module ScrapHelper
       message = "-------本日発売の本-------\n"+title_list.join("\n")
       client.push_message(user_id,{type: 'text',text: message})
     end
+  end
 
+  def title_verification(title,author)
+    destination_list = {}
+    SubscriptionList.all.each do |list|
+      case list.record_type
+      when "book"
+        if title.include?(list.content) 
+          destination_list[list.user.line_id] ||= []
+          destination_list[list.user.line_id] << "・"+ title
+        end
+      when "author"
+        if author.include?(list.content) 
+          destination_list[list.user.line_id] ||= []
+          destination_list[list.user.line_id] << "・"+ title
+        end
+      end
+    end
+    destination_list
+  end
+
+  def scraping(url)
+    html = open(url).read
+
+    doc = Nokogiri::HTML.parse(html)
+
+    # day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
+    day =  doc.xpath('//td[@class="products-td"]')[0]
+    books = day.search("div.product-description-right a")
+    authors = day.search("div.product-description-right  p:nth-last-child(1)")
+
+    book_list = []
+    books.each do  |title|
+      book_list << title.inner_text.gsub(/\(.*?\)/,"").strip
+    end
+    if book_list.empty?
+      list << "発売なし"
+    end
+
+    author_list = []
+    authors.each do |parson|
+      author_list << parson.inner_text
+    end
+
+    p author_list
+
+    p Hash[book_list.zip(author_list)]
 
   end
+
 end
