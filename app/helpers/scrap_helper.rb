@@ -77,7 +77,7 @@ module ScrapHelper
 
     author_list = []
     authors.each do |parson|
-      author_list << parson.inner_text
+      author_list << parson.inner_text.strip
     end
 
     p author_list
