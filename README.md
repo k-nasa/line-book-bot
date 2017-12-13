@@ -5,7 +5,9 @@
 
 事前に通知してほしい本の「タイトル」OR「作者」を登録して貰う必要があります。
 
-<img src="http://qr-official.line.me/L/9Oc34u4wr3.png">
+lineId : @ilm4016q
+
+<img src="https://user-images.githubusercontent.com/23740172/33937221-f4a1f10e-e045-11e7-867d-ec8073cb4321.png" width="120" height="120">
 
 ## how to use
 
