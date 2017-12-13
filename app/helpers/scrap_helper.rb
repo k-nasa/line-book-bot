@@ -72,7 +72,7 @@ module ScrapHelper
       book_list << title.inner_text.gsub(/\(.*?\)/,"").strip
     end
     if book_list.empty?
-      list << "発売なし"
+      book_list << "発売なし"
     end
 
     author_list = []
