@@ -62,8 +62,8 @@ module ScrapHelper
 
     doc = Nokogiri::HTML.parse(html)
 
-    # day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
-    day =  doc.xpath('//td[@class="products-td"]')[0]
+    day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
+    # day =  doc.xpath('//td[@class="products-td"]')[0]
     books = day.search("div.product-description-right a")
     authors = day.search("div.product-description-right  p:nth-last-child(1)")
 
