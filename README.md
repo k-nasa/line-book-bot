@@ -1,24 +1,16 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## どんなBOTか
+今回作成したのは、購読している本の発売時にLINEに通知してくれるBOTです。
 
-Things you may want to cover:
+事前に通知してほしい本の「タイトル」OR「作者」を登録して貰う必要があります。
 
-* Ruby version
+## how to user
 
-* System dependencies
+BOTに登録したい本のタイトルか作者を送ると、どちらのタイプで保存するか選択するボタンが送られてきます。
+どちらかのボタンを押すと登録完了です。
+![エビフライトライアングル]("/Users/kondouasan/Pictures/IMG_1465.jpg ")
+間違って登録してしまった場合は、同じテキストを送ることで削除するか残すかを選択できるボタンが送られてくるので、「削除」を選択して下さい。
 
-* Configuration
 
-* Database creation
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
