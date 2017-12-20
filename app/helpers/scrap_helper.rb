@@ -34,8 +34,8 @@ module ScrapHelper
     # end
     
     book_list.each do |title,author|
-      title_v(title,author,destination_list) unless title == "発売なし"
-    end#
+      title_verification(title,author,destination_list) unless title == "発売なし"
+    end
 
 
     p destination_list
