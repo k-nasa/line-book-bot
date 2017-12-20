@@ -57,13 +57,16 @@ module ScrapHelper
     destination_list
   end
 
-  def scraping(url)
+  def scraping(url , date = Date.today.day-1)
     html = open(url).read
 
     doc = Nokogiri::HTML.parse(html)
 
-    day =  doc.xpath('//td[@class="products-td"]')[Date.today.day-1]
-    # day =  doc.xpath('//td[@class="products-td"]')[0]
+    if date
+      day =  doc.xpath('//td[@class="products-td"]')[date]
+    else
+      day =  doc.xpath('//td[@class="products-td"]')
+    end
     books = day.search("div.product-description-right a")
     authors = day.search("div.product-description-right  p:nth-last-child(1)")
 
@@ -83,8 +86,22 @@ module ScrapHelper
       author_list << "発売なし"
     end
 
-    p Hash[book_list.zip(author_list)]
+    p book_list.zip(author_list)
 
+  end
+
+
+  #３ヶ月後の発売予定を持ってくる
+  def three_manth_book
+    date = Date.today
+    url1 = "https://calendar.gameiroiro.com/litenovel.php"
+    url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
+    url3 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+    url4 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 3).year}&month=#{(date >> 3).month}"
+
+    list = scraping(url1,nil) + scraping(url2,nil) + scraping(url3,nil) + scraping(url4,nil)
+
+    p list
   end
 
 end
