@@ -104,6 +104,7 @@ module ScrapHelper
   def three_month_notify
     book_list = get_three_month_book
     notify = []
+    user = User.find_by_line_id(user_id)
     book_list.each do |title,author|
       user.SubscriptionList.all.each do |list|
         case list.record_type
@@ -118,7 +119,7 @@ module ScrapHelper
         end
       end
     end
-    client.push_message(user,{type: "text", text: notify.uniq.join("\n\n")  })
+    client.push_message(user_id,{type: "text", text: notify.uniq.join("\n\n")  })
   end
 
 end
