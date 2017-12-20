@@ -19,17 +19,24 @@ module ScrapHelper
 
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
   def list_notify
-    novel_list = get_novel_list
-    comic_list = get_comic_list
+    # novel_list = get_novel_list
+    # comic_list = get_comic_list
+
+    book_list = get_novel_list + get_comic_list
 
     destination_list = {}
-    novel_list.each do |title,author|
-      title_verification(title,author,destination_list) unless title == "発売なし"
-    end
+    # novel_list.each do |title,author|
+    #   title_verification(title,author,destination_list) unless title == "発売なし"
+    # end
     
-    comic_list.each do |title,author|
-      title_verification(title,author,destination_list) unless title == "発売なし"
-    end
+    # comic_list.each do |title,author|
+    #   title_verification(title,author,destination_list) unless title == "発売なし"
+    # end
+    
+    book_list.each do |title,author|
+      title_v(title,author,destination_list) unless title == "発売なし"
+    end#
+
 
     p destination_list
 
@@ -91,16 +98,17 @@ module ScrapHelper
   end
 
 
-  #３ヶ月後の発売予定を持ってくる
-  def three_manth_book
+  #３ヶ月分の発売予定を持ってくる
+  def get_three_manth_book
     date = Date.today
     url1 = "https://calendar.gameiroiro.com/litenovel.php"
     url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
     url3 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
-    url4 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 3).year}&month=#{(date >> 3).month}"
 
-    list = scraping(url1,nil) + scraping(url2,nil) + scraping(url3,nil) + scraping(url4,nil)
-
+    url4 = 'https://calendar.gameiroiro.com/manga.php'
+    url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
+    url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+    list = scraping(url1,nil) + scraping(url2,nil) + scraping(url3,nil) + scraping(url4,nil) + scraping(url5,nil) +scraping(url6,nil)
     p list
   end
 
