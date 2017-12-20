@@ -83,7 +83,7 @@ module ScrapHelper
       author_list << "発売なし"
     end
 
-    p book_list.zip(author_list)
+    book_list.zip(author_list)
 
   end
 
@@ -105,8 +105,8 @@ module ScrapHelper
     book_list = get_three_month_book
     notify = []
     user = User.find_by_line_id(user_id)
-    book_list.each do |title,author|
-      user.SubscriptionList.all.each do |list|
+    user.SubscriptionList.all.each do |list|
+      book_list.each do |title,author|
         case list.record_type
         when "book"
           if title.include? list.content

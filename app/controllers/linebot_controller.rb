@@ -17,7 +17,7 @@ class LinebotController < ApplicationController
       when "購読リスト"
         show_my_list
       when "最近の通知"
-        client.push_message(user_id,{type: "text", text: "Coming soon..."})
+        # client.push_message(user_id,{type: "text", text: "Coming soon..."})
         three_month_notify
         # list_notify
       when "使い方"
