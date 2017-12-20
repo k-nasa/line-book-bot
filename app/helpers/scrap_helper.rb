@@ -19,20 +19,10 @@ module ScrapHelper
 
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
   def list_notify
-    # novel_list = get_novel_list
-    # comic_list = get_comic_list
 
     book_list = get_novel_list + get_comic_list
 
     destination_list = {}
-    # novel_list.each do |title,author|
-    #   title_verification(title,author,destination_list) unless title == "発売なし"
-    # end
-    
-    # comic_list.each do |title,author|
-    #   title_verification(title,author,destination_list) unless title == "発売なし"
-    # end
-    
     book_list.each do |title,author|
       title_verification(title,author,destination_list) unless title == "発売なし"
     end
@@ -99,7 +89,7 @@ module ScrapHelper
 
 
   #３ヶ月分の発売予定を持ってくる
-  def get_three_manth_book
+  def get_three_month_book
     date = Date.today
     url1 = "https://calendar.gameiroiro.com/litenovel.php"
     url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
@@ -109,7 +99,26 @@ module ScrapHelper
     url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
     url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
     list = scraping(url1,nil) + scraping(url2,nil) + scraping(url3,nil) + scraping(url4,nil) + scraping(url5,nil) +scraping(url6,nil)
-    p list
+  end
+
+  def three_month_notify
+    book_list = get_three_month_book
+    notify = []
+    book_list.each do |title,author|
+      user.SubscriptionList.all.each do |list|
+        case list.record_type
+        when "book"
+          if title.include? list.content
+            notify << "・#{title} (#{author})" 
+          end
+        when "author"
+          if author.include? list.content
+            notify << "・#{title} (#{author})" 
+          end
+        end
+      end
+    end
+    client.push_message(user,{type: "text", text: notify.uniq.join("\n\n")  })
   end
 
 end

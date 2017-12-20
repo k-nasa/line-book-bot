@@ -18,6 +18,7 @@ class LinebotController < ApplicationController
         show_my_list
       when "最近の通知"
         client.push_message(user_id,{type: "text", text: "Coming soon..."})
+        three_month_notify
         # list_notify
       when "使い方"
         client.push_message(user_id,{type: "text",text: "使い方\nhttps://github.com/nasaemon/line-book-bot/blob/master/README.md"})
