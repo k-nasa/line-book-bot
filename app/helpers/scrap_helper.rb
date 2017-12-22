@@ -98,7 +98,6 @@ module ScrapHelper
     url4 = 'https://calendar.gameiroiro.com/manga.php'
     url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
     url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
-    list = scraping(url1,nil) + scraping(url2,nil) + scraping(url3,nil) + scraping(url4,nil) + scraping(url5,nil) +scraping(url6,nil)
   end
 
   def three_month_notify
@@ -126,6 +125,7 @@ module ScrapHelper
     html = open(url).read
     doc = Nokogiri::HTML.parse(html)
     day =  doc.xpath('//td[@class="products-td"]')
+    month = doc.xpath('//th[@id = "top-th"]').inner_text.match(/.*年(\d+)月.*/)[1].to_i
 
     book_list = []
     day.each_with_index do |data,i|
@@ -136,6 +136,6 @@ module ScrapHelper
       book_list << [i+1,[books,authors]]
     end
 
-    p book_list
+    p [month,book_list]
   end
 end
