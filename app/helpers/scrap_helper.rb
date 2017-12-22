@@ -122,4 +122,20 @@ module ScrapHelper
     client.push_message(user_id,{type: "text", text: notify.uniq.join("\n\n")  })
   end
 
+  def get_all_book_data(url)
+    html = open(url).read
+    doc = Nokogiri::HTML.parse(html)
+    day =  doc.xpath('//td[@class="products-td"]')
+
+    book_list = []
+    day.each_with_index do |data,i|
+      books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(.*?\)/,"").strip }
+      authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "")}
+      books = "発売なし" if books.empty?
+      authors = "発売なし" if authors.empty?
+      book_list << [i+1,[books,authors]]
+    end
+
+    p book_list
+  end
 end
