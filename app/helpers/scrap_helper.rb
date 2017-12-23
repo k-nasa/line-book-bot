@@ -121,21 +121,30 @@ module ScrapHelper
     client.push_message(user_id,{type: "text", text: notify.uniq.join("\n\n")  })
   end
 
-  def get_all_book_data(url)
+  #1ページまるまる本の情報を持ってくる
+  def save_book_data(url)
     html = open(url).read
     doc = Nokogiri::HTML.parse(html)
     day =  doc.xpath('//td[@class="products-td"]')
+    year = doc.xpath('//th[@id = "top-th"]').inner_text.match(/.*年(\d+)月.*/)[0].to_i
     month = doc.xpath('//th[@id = "top-th"]').inner_text.match(/.*年(\d+)月.*/)[1].to_i
 
     book_list = []
     day.each_with_index do |data,i|
       books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(.*?\)/,"").strip }
-      authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "")}
-      books = "発売なし" if books.empty?
-      authors = "発売なし" if authors.empty?
-      book_list << [i+1,[books,authors]]
+      authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "") }
+
+      unless books.empty?
+        books.zip(authors).each {|book,author| book_list << [Date.new(year,month,i+1) , book,author] 
+                Book.create(title: book,author: author,release_date: Date.new(year,month,i+1))
+}
+      else 
+        book_list << [Date.new(year,month,i+1),"発売なし","発売なし"]
+      end
+
     end
 
-    p [month,book_list]
+    p book_list
+
   end
 end
