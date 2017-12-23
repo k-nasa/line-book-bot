@@ -125,8 +125,9 @@ module ScrapHelper
     end
 
     p notify
-    notify = notify.uniq unless notify.empty?
+    notify = notify.uniq
     notify = Book.where(id: notify.map{|item| item.id})
+    notify = notify.order(:release_date) unless notify.empty?
     message = ""
     notify.each do |mes|
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n"
