@@ -128,7 +128,7 @@ module ScrapHelper
     notify.each do |mes|
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n"
     end
-    client.push_message(user_id,{type: "text", message})
+    client.push_message(user_id,{type: "text", text: message})
   end
 
   #1ページまるまる本の情報を持ってくる
