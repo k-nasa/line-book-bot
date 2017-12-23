@@ -124,7 +124,7 @@ module ScrapHelper
       end
     end
 
-    p notity
+    p notify
     notify = notify.order(:release_date).uniq unless notify.empty?
     message = ""
     notify.each do |mes|
