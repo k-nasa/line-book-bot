@@ -147,7 +147,7 @@ module ScrapHelper
 
     book_list = []
     day.each_with_index do |data,i|
-      books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(\D*\)/,"").strip }
+      books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(\D*\)/,"").gsub(/・/,"").strip }
       authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "") }
 
       unless books.empty?
