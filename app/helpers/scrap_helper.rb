@@ -89,7 +89,7 @@ module ScrapHelper
 
 
   #３ヶ月分の発売予定を持ってくる
-  def get_three_month_book
+  def save_three_month_book
     date = Date.today
     url1 = "https://calendar.gameiroiro.com/litenovel.php"
     url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
@@ -98,27 +98,37 @@ module ScrapHelper
     url4 = 'https://calendar.gameiroiro.com/manga.php'
     url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
     url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+
+    save_book_data url1
+    save_book_data url2
+    save_book_data url3
+    save_book_data url4
+    save_book_data url5
+    save_book_data url6
   end
 
   def three_month_notify
-    book_list = get_three_month_book
     notify = []
     user = User.find_by_line_id(user_id)
     user.SubscriptionList.all.each do |list|
-      book_list.each do |title,author|
-        case list.record_type
-        when "book"
-          if title.include? list.content
-            notify << "・#{title} (#{author})" 
-          end
-        when "author"
-          if author.include? list.content
-            notify << "・#{title} (#{author})" 
-          end
+      case list.record_type
+      when "book"
+        if books = Book.where('title LIKE (?)',"%#{list.content}%")
+          books.each {|book| notify << book}
+        end
+      when "author"
+        if authors = Book.where('author LIKE (?)',"%#{list.content}%")
+          authors.each {|author| notify << author }
         end
       end
     end
-    client.push_message(user_id,{type: "text", text: notify.uniq.join("\n\n")  })
+
+    notify = notify.order(:release_date).uniq
+    message = ""
+    notify.each do |mes|
+      message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n"
+    end
+    client.push_message(user_id,{type: "text", message)
   end
 
   #1ページまるまる本の情報を持ってくる
@@ -126,25 +136,20 @@ module ScrapHelper
     html = open(url).read
     doc = Nokogiri::HTML.parse(html)
     day =  doc.xpath('//td[@class="products-td"]')
-    year = doc.xpath('//th[@id = "top-th"]').inner_text.match(/.*年(\d+)月.*/)[0].to_i
-    month = doc.xpath('//th[@id = "top-th"]').inner_text.match(/.*年(\d+)月.*/)[1].to_i
+    year = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)/)[1].to_i
+    month = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)/)[2].to_i
+    type = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)発売日一覧/)[3].strip
+    
 
     book_list = []
     day.each_with_index do |data,i|
-      books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(.*?\)/,"").strip }
+      books = data.search("div.product-description-right a").map {|item| item.inner_text.gsub(/\(\D*\)/,"").strip }
       authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "") }
 
       unless books.empty?
-        books.zip(authors).each {|book,author| book_list << [Date.new(year,month,i+1) , book,author] 
-                Book.create(title: book,author: author,release_date: Date.new(year,month,i+1))
-}
-      else 
-        book_list << [Date.new(year,month,i+1),"発売なし","発売なし"]
-      end
-
+        books.zip(authors).each {|book,author| 
+          Book.create(title: book,author: author,release_date: Date.new(year,month,i+1),record_type: type)
+        }
     end
-
-    p book_list
-
   end
 end
