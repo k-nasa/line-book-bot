@@ -114,6 +114,7 @@ module ScrapHelper
       case list.record_type
       when "book"
         if books = Book.where('title LIKE (?)',"%#{list.content}%")
+          p books
           books.each {|book| notify << book}
         end
       when "author"
@@ -123,7 +124,8 @@ module ScrapHelper
       end
     end
 
-    notify = notify.order(:release_date).uniq
+    p notity
+    notify = notify.order(:release_date).uniq unless notify.empty?
     message = ""
     notify.each do |mes|
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n"
