@@ -139,7 +139,7 @@ module ScrapHelper
     year = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)/)[1].to_i
     month = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)/)[2].to_i
     type = doc.xpath('//th[@id = "top-th"]').inner_text.match(/(\d*)年(\d+)月(\D*)発売日一覧/)[3].strip
-    
+
 
     book_list = []
     day.each_with_index do |data,i|
@@ -150,6 +150,7 @@ module ScrapHelper
         books.zip(authors).each {|book,author| 
           Book.create(title: book,author: author,release_date: Date.new(year,month,i+1),record_type: type)
         }
+      end
     end
   end
 end
