@@ -10,7 +10,6 @@ class LinebotController < ApplicationController
 
 
   def callback
-
     case event['type']
     when "message"
       case event['message']['text']
