@@ -132,7 +132,7 @@ module ScrapHelper
     notify.each do |mes|
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n" if mes.record_type == "ライトノベル"
     end
-    message += "-----マンガ-----"
+    message += "-----マンガ-----\n"
     notify.each do |mes|
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n" if mes.record_type == "漫画コミック"
     end
