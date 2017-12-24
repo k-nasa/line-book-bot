@@ -88,24 +88,6 @@ module ScrapHelper
   end
 
 
-  #３ヶ月分の発売予定を持ってくる
-  def save_three_month_book
-    date = Date.today
-    url1 = "https://calendar.gameiroiro.com/litenovel.php"
-    url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
-    url3 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
-
-    url4 = 'https://calendar.gameiroiro.com/manga.php'
-    url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
-    url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
-
-    save_book_data url1
-    save_book_data url2
-    save_book_data url3
-    save_book_data url4
-    save_book_data url5
-    save_book_data url6
-  end
 
   def three_month_notify
     notify = []
@@ -114,7 +96,6 @@ module ScrapHelper
       case list.record_type
       when "book"
         if books = Book.where('title LIKE (?)',"%#{list.content}%")
-          p books
           books.each {|book| notify << book}
         end
       when "author"
@@ -155,10 +136,28 @@ module ScrapHelper
       authors = data.search("div.product-description-right  p:nth-last-child(1)").map {|parson| parson.inner_text.gsub(" ", "") }
 
       unless books.empty?
-        books.zip(authors).each {|book,author| 
-          Book.create(title: book,author: author,release_date: Date.new(year,month,i+1),record_type: type)
-        }
+        books.zip(authors).each {|book,author| Book.create(title: book,author: author,release_date: Date.new(year,month,i+1),record_type: type)}
       end
     end
+  end
+
+
+  #３ヶ月分の発売予定を持ってくる
+  def save_three_month_book
+    date = Date.today
+    url1 = "https://calendar.gameiroiro.com/litenovel.php"
+    url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
+    url3 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+
+    url4 = 'https://calendar.gameiroiro.com/manga.php'
+    url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
+    url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+
+    save_book_data url1
+    save_book_data url2
+    save_book_data url3
+    save_book_data url4
+    save_book_data url5
+    save_book_data url6
   end
 end
