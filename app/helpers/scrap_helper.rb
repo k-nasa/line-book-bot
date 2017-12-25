@@ -153,6 +153,7 @@ module ScrapHelper
       "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}",
       "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}",
     ]
+    urls.map {|url| save_book_data(url)}
 
   end
 end
