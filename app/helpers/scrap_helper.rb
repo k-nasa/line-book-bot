@@ -11,22 +11,25 @@ module ScrapHelper
         if books = Book.where("title LIKE(?)","%#{list.content}%").where(release_date: Date.today)
           books.each do |book|
             destination_list[list.user.line_id] ||= []
-            destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
+            destination_list[list.user.line_id] << book
           end
         end
       when 'author'
         if books = Book.where("author LIKE(?)","%#{list.content}%").where(release_date: Date.today)
           books.each do |book|
             destination_list[list.user.line_id] ||= []
-            destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
+            destination_list[list.user.line_id] << book
           end
         end
       end
     end
 
     p destination_list
-    destination_list.each do |user_id,title_list|
-      message = "--#{Date.today}発売の本--\n"+title_list.uniq.join("\n\n")
+    destination_list.each do |user_id,book_list|
+      message = "[#{Date.today}発売の本]\n---漫画---\n"
+      book_list.uniq.each {|book| message += book.title+"(#{book.author})\n" if book.record_type == "漫画コミック" }
+      message += "---小説---"
+      book_list.uniq.each {|book| message += book.title+"(#{book.author})\n" if book.record_type == "ライトノベル" }
       client.push_message(user_id,{type: 'text',text: message})
     end
   end
