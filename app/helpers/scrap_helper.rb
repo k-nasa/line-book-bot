@@ -153,9 +153,9 @@ module ScrapHelper
       "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> -2).year}&month=#{(date >> -2).month}",
       "https://calendar.gameiroiro.com/manga.php",
       "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}",
-      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}",
       "https://calendar.gameiroiro.com/manga.php?year=#{(date >> -1).year}&month=#{(date >> -1).month}",
-      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> -2).year}&month=#{(date >> -2).month}"
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> -2).year}&month=#{(date >> -2).month}",
     ]
 
   end
