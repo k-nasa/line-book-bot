@@ -3,7 +3,7 @@ class LinebotController < ApplicationController
   include LinebotHelper
   include ScrapHelper
   protect_from_forgery :except => [:callback]
-  
+
   def get_callback
     render plain: "hello"
   end
@@ -60,7 +60,6 @@ class LinebotController < ApplicationController
 
   #ブロック時の処理
   def unfollow
-    client.push_message(user_id,{type: "text",text: "byby"})
     unlink_menu
     user = User.find_by_line_id(user_id)
     if user 
