@@ -3,17 +3,17 @@ module ScrapHelper
   require 'open-uri'
   require 'net/http'
 
-  def get_novel_list
-    url = 'https://calendar.gameiroiro.com/litenovel.php'
-    scraping(url)
-  end
+  # def get_novel_list
+  #   url = 'https://calendar.gameiroiro.com/litenovel.php'
+  #   scraping(url)
+  # end
 
 
 
-  def get_comic_list
-    url = 'https://calendar.gameiroiro.com/manga.php'
-    scraping(url)
-  end
+  # def get_comic_list
+  #   url = 'https://calendar.gameiroiro.com/manga.php'
+  #   scraping(url)
+  # end
 
 
 
@@ -40,12 +40,12 @@ module ScrapHelper
     SubscriptionList.all.each do |list|
       case list.record_type
       when "book"
-        if title.include?(list.content) 
+        if title.include?(list.content)
           destination_list[list.user.line_id] ||= []
           destination_list[list.user.line_id] << "・#{title} (#{author})"
         end
       when "author"
-        if author.include?(list.content) 
+        if author.include?(list.content)
           destination_list[list.user.line_id] ||= []
           destination_list[list.user.line_id] << "・#{title} (#{author})"
         end
@@ -54,38 +54,35 @@ module ScrapHelper
     destination_list
   end
 
-  def scraping(url , date = Date.today.day-1)
-    html = open(url).read
-
-    doc = Nokogiri::HTML.parse(html)
-
-    if date
-      day =  doc.xpath('//td[@class="products-td"]')[date]
-    else
-      day =  doc.xpath('//td[@class="products-td"]')
-    end
-    books = day.search("div.product-description-right a")
-    authors = day.search("div.product-description-right  p:nth-last-child(1)")
-
-    book_list = []
-    books.each do  |title|
-      book_list << title.inner_text.gsub(/\(.*?\)/,"").strip
-    end
-    if book_list.empty?
-      book_list << "発売なし"
-    end
-
-    author_list = []
-    authors.each do |parson|
-      author_list << parson.inner_text.gsub(" ", "") 
-    end
-    if author_list.empty?
-      author_list << "発売なし"
-    end
-
-    book_list.zip(author_list)
-
-  end
+  # def scraping(url , date = Date.today.day-1)
+  #   html = open(url).read
+  #
+  #   doc = Nokogiri::HTML.parse(html)
+  #
+  #   if date
+  #     day =  doc.xpath('//td[@class="products-td"]')[date]
+  #   else
+  #     day =  doc.xpath('//td[@class="products-td"]')
+  #   end
+  #   books = day.search("div.product-description-right a")
+  #   authors = day.search("div.product-description-right  p:nth-last-child(1)")
+  #
+  #   book_list = []
+  #   books.each do  |title|
+  #     book_list << title.inner_text.gsub(/\(.*?\)/,"").strip
+  #   end
+  #   if book_list.empty?
+  #     book_list << "発売なし"
+  #   end
+  #
+  #   author_list = []
+  #   authors.each do |parson|
+  #     author_list << parson.inner_text.gsub(" ", "")
+  #   end
+  #   author_list << "発売なし"if author_list.empty?
+  #
+  #   book_list.zip(author_list)
+  # end
 
 
 
