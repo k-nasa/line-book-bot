@@ -9,8 +9,8 @@ module LinebotHelper
       unless user.SubscriptionList.find_by(record_type: type,content: postback_data[1])
         record  = user.SubscriptionList.build(record_type: type,content: postback_data[1])
         if record.save
-          message = "「#{postback_data[1]}」を購読本リストに保存しました" if type == "author"
-          message = "「#{postback_data[1]}」を購読作者リストに保存しました" if type == "book"
+          message = "「#{postback_data[1]}」を購読本リストに保存しました" if type == "book"
+          message = "「#{postback_data[1]}」を購読作者リストに保存しました" if type == "author"
           client.push_message(user_id,{type: "text",text: message})
         end
       else
