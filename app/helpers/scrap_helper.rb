@@ -18,41 +18,39 @@ module ScrapHelper
 
 
   #スクレイピングしてきたタイトルがSubscriptionListにあった場合userに通知
-  def list_notify
-
-    book_list = get_novel_list + get_comic_list
-
-    destination_list = {}
-    book_list.each do |title,author|
-      title_verification(title,author,destination_list) unless title == "発売なし"
-    end
-
-
-    p destination_list
-
-    destination_list.each do |user_id,title_list|
-      message = "-------本日発売の本-------\n"+title_list.uniq.join("\n\n")
-      client.push_message(user_id,{type: 'text',text: message})
-    end
-  end
-
-  def title_verification(title,author,destination_list)
-    SubscriptionList.all.each do |list|
-      case list.record_type
-      when "book"
-        if title.include?(list.content)
-          destination_list[list.user.line_id] ||= []
-          destination_list[list.user.line_id] << "・#{title} (#{author})"
-        end
-      when "author"
-        if author.include?(list.content)
-          destination_list[list.user.line_id] ||= []
-          destination_list[list.user.line_id] << "・#{title} (#{author})"
-        end
-      end
-    end
-    destination_list
-  end
+  # def list_notify
+  #   book_list = get_novel_list + get_comic_list
+  #
+  #   destination_list = {}
+  #   book_list.each do |title,author|
+  #     title_verification(title,author,destination_list) unless title == "発売なし"
+  #   end
+  #
+  #   p destination_list
+  #
+  #   destination_list.each do |user_id,title_list|
+  #     message = "-------本日発売の本-------\n"+title_list.uniq.join("\n\n")
+  #     client.push_message(user_id,{type: 'text',text: message})
+  #   end
+  # end
+  #
+  # def title_verification(title,author,destination_list)
+  #   SubscriptionList.all.each do |list|
+  #     case list.record_type
+  #     when "book"
+  #       if title.include?(list.content)
+  #         destination_list[list.user.line_id] ||= []
+  #         destination_list[list.user.line_id] << "・#{title} (#{author})"
+  #       end
+  #     when "author"
+  #       if author.include?(list.content)
+  #         destination_list[list.user.line_id] ||= []
+  #         destination_list[list.user.line_id] << "・#{title} (#{author})"
+  #       end
+  #     end
+  #   end
+  #   destination_list
+  # end
 
   # def scraping(url , date = Date.today.day-1)
   #   html = open(url).read
@@ -84,6 +82,34 @@ module ScrapHelper
   #   book_list.zip(author_list)
   # end
 
+
+  def list_notify
+    destination_list = {}
+    SubscriptionList.all.each do |list|
+      case list.record_type
+      when 'book'
+        if books = Book.where('title LIKE(?) AND release_date == (?)',"%#{list.content}%", Date.today)
+          books.each do |book|
+            destination_list[list.user.line_id] ||= []
+            destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
+          end
+        end
+      when 'author'
+        if books = Book.where('author LIKE(?) AND release_date == (?)',"%#{list.content}%", Date.today)
+          books.each do |book|
+            destination_list[list.user.line_id] ||= []
+            destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
+          end
+        end
+      end
+      p destination_list
+
+      destination_list.each do |user_id,title_list|
+        message = "-------本日発売の本-------\n"+title_list.uniq.join("\n\n")
+        client.push_message(user_id,{type: 'text',text: message})
+      end
+  end
+  end
 
 
   def three_month_notify
