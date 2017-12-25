@@ -51,7 +51,7 @@ class LinebotController < ApplicationController
                  text: "友達登録ありがとう!!\n使い方はこちらを参照\nhttps://github.com/nasaemon/line-book-bot/blob/master/README.md"
       }
       client.push_message(user_id,message)
-    else 
+    else
       message = {type: "text",
                  text: "エラー"}
       client.push_message(user_id,message)
@@ -62,7 +62,7 @@ class LinebotController < ApplicationController
   def unfollow
     unlink_menu
     user = User.find_by_line_id(user_id)
-    if user 
+    if user
       user.destroy
     end
   end
