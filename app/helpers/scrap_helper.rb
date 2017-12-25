@@ -145,19 +145,18 @@ module ScrapHelper
   #３ヶ月分の発売予定を持ってくる
   def save_three_month_book
     date = Date.today
-    url1 = "https://calendar.gameiroiro.com/litenovel.php"
-    url2 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
-    url3 = "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+    urls = [
+      "https://calendar.gameiroiro.com/litenovel.php",
+      "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}",
+      "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}",
+      "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> -1).year}&month=#{(date >> -1).month}",
+      "https://calendar.gameiroiro.com/litenovel.php?year=#{(date >> -2).year}&month=#{(date >> -2).month}",
+      "https://calendar.gameiroiro.com/manga.php",
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}",
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> -1).year}&month=#{(date >> -1).month}",
+      "https://calendar.gameiroiro.com/manga.php?year=#{(date >> -2).year}&month=#{(date >> -2).month}"
+    ]
 
-    url4 = 'https://calendar.gameiroiro.com/manga.php'
-    url5 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 1).year}&month=#{(date >> 1).month}"
-    url6 = "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}"
-
-    save_book_data url1
-    save_book_data url2
-    save_book_data url3
-    save_book_data url4
-    save_book_data url5
-    save_book_data url6
   end
 end
