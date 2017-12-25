@@ -11,7 +11,7 @@ module LinebotHelper
         if record.save
           message = "「#{postback_data[1]}」を購読本リストに保存しました" if type == "author"
           message = "「#{postback_data[1]}」を購読作者リストに保存しました" if type == "book"
-          client.push_message(user_id,{type: "text",text: message)
+          client.push_message(user_id,{type: "text",text: message})
         end
       else
         client.push_message(user_id,{type: "text",text: "「#{postback_data[1]}」はすでに登録済みです"})
