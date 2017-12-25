@@ -88,7 +88,7 @@ module ScrapHelper
     SubscriptionList.all.each do |list|
       case list.record_type
       when 'book'
-        if books = Book.where("title LIKE(?) AND release_date == ?","%#{list.content}%", Date.today)
+        if books = Book.where("title LIKE(?)","%#{list.content}%").where(release_date: Date.today)
           books.each do |book|
             destination_list[list.user.line_id] ||= []
             destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
