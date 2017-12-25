@@ -133,13 +133,13 @@ module ScrapHelper
     notify = Book.where(id: notify.map{|item| item.id})
     notify = notify.order(:release_date) unless notify.empty?
     message = "-----ライトノベル-----\n"
+    message += "発売なし\n" if notify.empty?
     notify.each do |mes|
-      message += "発売なし" if mes.empty?
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n" if mes.record_type == "ライトノベル"
     end
     message += "-----マンガ-----\n"
+    message += "発売なし\n" if notify.empty?
     notify.each do |mes|
-      message += "発売なし" if mes.empty?
       message += "#{mes.title} (#{mes.author}) [#{mes.release_date}]\n\n" if mes.record_type == "漫画コミック"
     end
     client.push_message(user_id,{type: "text", text: message})
