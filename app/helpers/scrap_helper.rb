@@ -26,9 +26,9 @@ module ScrapHelper
 
     p destination_list
     destination_list.each do |user_id,book_list|
-      message = "[#{Date.today}発売の本]\n---漫画---\n\n"
+      message = "[#{Date.today}発売の本]\n---漫画---\n"
       book_list.uniq.each {|book| message += book.title+"(#{book.author})\n\n" if book.record_type == "漫画コミック" }
-      message += "---小説---\n\n"
+      message += "---小説---\n"
       book_list.uniq.each {|book| message += book.title+"(#{book.author})\n\n" if book.record_type == "ライトノベル" }
       client.push_message(user_id,{type: 'text',text: message})
     end
