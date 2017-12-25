@@ -95,7 +95,7 @@ module ScrapHelper
           end
         end
       when 'author'
-        if books = Book.where('author LIKE (?) AND release_date == ?',"%#{list.content}%", Date.today)
+        if books = Book.where("author LIKE(?)","%#{list.content}%").where(release_date: Date.today)
           books.each do |book|
             destination_list[list.user.line_id] ||= []
             destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
