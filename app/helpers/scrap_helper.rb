@@ -95,7 +95,7 @@ module ScrapHelper
           end
         end
       when 'author'
-        if books = Book.where('author LIKE(?) AND release_date == (?)',"%#{list.content}%", Date.today)
+        if books = Book.where('author LIKE(?) AND release_date == ?',"%#{list.content}%", Date.today)
           books.each do |book|
             destination_list[list.user.line_id] ||= []
             destination_list[list.user.line_id] << "・#{book.title} (#{book.author})"
@@ -108,7 +108,7 @@ module ScrapHelper
         message = "-------本日発売の本-------\n"+title_list.uniq.join("\n\n")
         client.push_message(user_id,{type: 'text',text: message})
       end
-  end
+    end
   end
 
 
