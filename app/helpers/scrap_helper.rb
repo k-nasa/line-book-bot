@@ -41,11 +41,11 @@ module ScrapHelper
     user.SubscriptionList.all.each do |list|
       case list.record_type
       when "book"
-        if books = Book.where('title LIKE (?)',"%#{list.content}%")
+        if books = Book.where('title LIKE (?)',"%#{list.content}%").where('release_date >= ? ', Date.today )
           books.each {|book| notify << book}
         end
       when "author"
-        if authors = Book.where('author LIKE (?)',"%#{list.content}%")
+        if authors = Book.where('author LIKE (?)',"%#{list.content}%").where('release_date >= ? ', Date.today)
           authors.each {|author| notify << author }
         end
       end
@@ -102,6 +102,5 @@ module ScrapHelper
       "https://calendar.gameiroiro.com/manga.php?year=#{(date >> 2).year}&month=#{(date >> 2).month}",
     ]
     urls.map {|url| save_book_data(url)}
-
   end
 end
