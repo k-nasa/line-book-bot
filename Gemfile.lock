@@ -49,7 +49,7 @@ GEM
     arel (8.0.0)
     bindex (0.8.1)
     builder (3.2.4)
-    byebug (11.1.1)
+    byebug (11.1.2)
     capybara (2.18.0)
       addressable
       mini_mime (>= 0.1.3)
